@@ -3,6 +3,11 @@ building high-performance mobile frontends.  Some of these are broadly
 applicable to any mobile website, some are specifically for people building
 apps.
 
+
+1) UX and UI
+2) Performance
+3) Homescreen and Offline
+
 ###Don't put touch interactions too close to edges of the screen.
 
   Unfortunately, mobile web apps are considered second class citizens relative
@@ -229,7 +234,7 @@ and back button, and other miscellaneous browser controls with a few meta tags.
   <meta name="mobile-web-app-capable" content="yes">
   <!-- iOS -->
   <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="apple-mobile-web-app-status-bar-style" content="translucent-black">
   <meta name="apple-mobile-web-app-title" content="My App">
   ```
 
@@ -306,6 +311,16 @@ want to allow the user to arbitrarily zoom in and out.
   If you use this meta tag, it will prevent the user from scaling and will also
 prevent scaling due to input focus and scaling due to device orientation.
 
+### IE cleartype.
+
+  You can turn cleartype on in IE-based browsers so that text in your mobile app looks nicer on the small screen.
+
+  ```
+  <meta http-equiv="cleartype" content="on">
+  ```
+
+##Homescreen and Offline
+
 ###Setup touch icons for the user's homescreen.
 
   A key component of the native experience is the [ability to launch the app
@@ -328,7 +343,7 @@ combinations.
 ###Add to homescreen splash screen
 
   iOS goes even further by displaying a startup image on webapp load, like the
-user would see during the loading period of a native app. 
+user would see during the loading period of a native app.
 
   ```html
   <link rel="apple-touch-startup-image" href="img/l/splash.png">
@@ -344,8 +359,7 @@ apple-mobile-web-app-title tag.
   <meta name="apple-mobile-web-app-title" content="Luster">
   ```
 
-  This tag is ignored by other mobile OSes, though. Hope your webapp's root
-document has a good, and short, title.
+  Android, doesn't have a comparable alternative, it will be set to your pages &lt;title&gt;.
 
 ###Offline Caching
 
@@ -365,10 +379,3 @@ offline and unable to connect to the app's servers.  If your app has data that
 a user may want to access when they aren't online, store it locally and sync
 when they come back online.
 
-### IE cleartype.
-
-  You can turn cleartype on in IE-based browsers so that text in your mobile app looks nicer on the small screen.
-
-  ```
-  <meta http-equiv="cleartype" content="on">
-  ```
