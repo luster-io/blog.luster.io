@@ -308,7 +308,26 @@ prevent scaling due to input focus and scaling due to device orientation.
 
 ###Setup touch icons for the user's homescreen.
 
+  A key component of the native experience is the [ability to launch the app
+via a pretty icon on the user's
+homescreen](https://developer.apple.com/library/ios/documentation/appleapplications/reference/safariwebcontent/configuringwebapplications/configuringwebapplications.html).
+iOS and Android make this possible, for a variety of resolution and size
+combinations.
+
+  ```
+  <link rel="apple-touch-icon" href="touch-icon-iphone.png">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="touch-icon-ipad.png">
+
+  <link rel="apple-touch-icon" sizes="120x120" href="touch-icon-iphone-retina.png">
+
+  <link rel="apple-touch-icon" sizes="152x152" href="touch-icon-ipad-retina.png">
+  ```
+
 ###Add to homescreen splash screen
+
+  iOS goes even further by displaying a startup image on webapp load, like the
+user would see during the loading period of a native app. 
 
   ```
   <link rel="apple-touch-startup-image" href="img/l/splash.png">
@@ -334,6 +353,8 @@ when they come back online.
 
 ### IE cleartype.
 
-  You can turn cleartype on in IE-based browsers so that text looks better on the small screen.
+  You can turn cleartype on in IE-based browsers so that text in your mobile app looks nicer on the small screen.
 
+  ```
   <meta http-equiv="cleartype" content="on">
+  ```
