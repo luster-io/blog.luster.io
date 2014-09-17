@@ -144,7 +144,7 @@ the default highlight.
   }
   ```
 
-###Use `:active` states
+###Use `:active` states or add active classes
 
   So we got rid of the tap highlight color. Now we need to give users feedback
 when they tap something that's tappable.
@@ -156,6 +156,82 @@ when they tap something that's tappable.
     /* some example */
   }
   ```
+
+###Hide chrome when your app is added to the homescreen.
+
+  If someone likes your app enough to add it to their homescreen, why not make
+the experience even better for them?  You can remove the address bar, forward
+and back button, and other miscellaneous browser controls with a few meta tags.
+
+  ```html
+  <!-- android -->
+  <meta name="mobile-web-app-capable" content="yes">
+  <!-- iOS -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="translucent-black">
+  <meta name="apple-mobile-web-app-title" content="My App">
+  ```
+
+###Hide with opacity or translate off screen if you plan to animate an element
+
+  If you have an element that needs to be able to appear onscreen in a moment's
+notice, don't just `display: none;` it.  If you do, it will have to be painted
+before it can appear.  So, for things like hidden menus, it's best to hide them
+by setting `opacity` to `0` or by translating the item off screen
+(`translate3d(-9999px, 0, 0)`.  That way it's painted, loaded on the GPU, and
+ready to go, and won't have an initial jank, when you pull it onscreen.
+
+
+###Don't use a custom scroll implementation unless you REALLY need to.
+
+  But you shouldn't need to.
+
+  Unless you're trying to do something crazy fancy like paralax.  Or you want
+things to whizz, spin, or spring in as the user scrolls down.  However, I've
+never seen entrance effects or paralax done well on mobile, so be prepared for
+it not to work out.  The danger is that not only do your neat effects jank, but
+your scrolling janks out along with them.
+
+  There are a few reasons why it wouldn't work.  Even though you can build
+scrolling that feels very similar to native with something like Impulse, there
+are still problems with implementing your own scrolling.  One is that you're
+limiting the length of your content.  Mobile browsers do some crazy things to
+make scrolling smooth.  They only load some of the painted content, and
+asyncronously paint and load the content in.  If you do scrolling yourself, you
+don't get that.  Your scrollable area has to fit entirely into gpu memory.  If
+it doesn't you're going to have to paint portions of it as you scroll, and
+there is no way that's going to be smooth.
+
+###Prevent user scaling.
+
+  If you're building an app that you want to feel native, you probably don't
+want to allow the user to arbitrarily zoom in and out.
+
+  ```
+  <meta name="viewport" content="width=device-width,height=device-height,user-scalable=no,initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0">
+  ```
+
+  If you use this meta tag, it will prevent the user from scaling and will also
+prevent scaling due to input focus and scaling due to device orientation.
+
+
+###Test your back and forward buttons and linkability
+
+  Even though your app provides it's own navigation, you can't just ignore the
+browser's default navigation. Not to mention, if you launch your app on HN, the
+top comments will revolve around the fact that your app breaks back button
+functionality.  Learn to use pushState, or find a framework that handles it for
+you.
+
+### IE cleartype.
+
+  You can turn cleartype on in IE-based browsers so that text in your mobile app looks nicer on the small screen.
+
+  ```
+  <meta http-equiv="cleartype" content="on">
+  ```
+
+## Performance
 
 ###Only animate transforms, opacity, and filter.
 
@@ -223,47 +299,6 @@ of content takes a long time.  Generally when this is the case, I try to just
 paint everything "above the fold" before I animate the view in, and then start
 painting everything else in asyncronously once it's loaded.
 
-###Hide chrome when your app is added to the homescreen.
-
-  If someone likes your app enough to add it to their homescreen, why not make
-the experience even better for them?  You can remove the address bar, forward
-and back button, and other miscellaneous browser controls with a few meta tags.
-
-  ```html
-  <!-- android -->
-  <meta name="mobile-web-app-capable" content="yes">
-  <!-- iOS -->
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="translucent-black">
-  <meta name="apple-mobile-web-app-title" content="My App">
-  ```
-
-###Provide your own navigation
-
-  If a user adds your app to their homescreen, they won't have access to the
-back or forward buttons, so they need to be able to navigate your entire app
-without the use of these controls.  Using the common native app metaphor of
-transitioning between views works really well.  You can use CSS animations to
-setup the transitions, and pushState to setup the back button functionality for
-each page.
-
-###Test your back and forward buttons and linkability
-
-  Even though your app provides it's own navigation, you can't just ignore the
-browser's default navigation. Not to mention, if you launch your app on HN, the
-top comments will revolve around the fact that your app breaks back button
-functionality.  Learn to use pushState, or find a framework that handles it for
-you.
-
-###Hide with opacity or translate off screen if you plan to animate an element
-
-  If you have an element that needs to be able to appear onscreen in a moment's
-notice, don't just `display: none;` it.  If you do, it will have to be painted
-before it can appear.  So, for things like hidden menus, it's best to hide them
-by setting `opacity` to `0` or by translating the item off screen
-(`translate3d(-9999px, 0, 0)`.  That way it's painted, loaded on the GPU, and
-ready to go, and won't have an initial jank, when you pull it onscreen.
-
 ###Don't do work in scroll or touch event handlers.
 
   You may be tempted to set style properties in event handlers.  These events
@@ -278,46 +313,6 @@ is handled in a seperate thread from your javascript.  However, if you have
 scroll events, the scroll thread has to "wait" on the result of the scroll
 handler, since it may change the scrollTop, or call event.preventDefault(), in
 which case the browser would have to immediately stop scrolling.
-
-###Don't use a custom scroll implementation unless you REALLY need to.
-
-  But you shouldn't need to.
-
-  Unless you're trying to do something crazy fancy like paralax.  Or you want
-things to whizz, spin, or spring in as the user scrolls down.  However, I've
-never seen entrance effects or paralax done well on mobile, so be prepared for
-it not to work out.  The danger is that not only do your neat effects jank, but
-your scrolling janks out along with them.
-
-  There are a few reasons why it wouldn't work.  Even though you can build
-scrolling that feels very similar to native with something like Impulse, there
-are still problems with implementing your own scrolling.  One is that you're
-limiting the length of your content.  Mobile browsers do some crazy things to
-make scrolling smooth.  They only load some of the painted content, and
-asyncronously paint and load the content in.  If you do scrolling yourself, you
-don't get that.  Your scrollable area has to fit entirely into gpu memory.  If
-it doesn't you're going to have to paint portions of it as you scroll, and
-there is no way that's going to be smooth.
-
-###Prevent user scaling.
-
-  If you're building an app that you want to feel native, you probably don't
-want to allow the user to arbitrarily zoom in and out.
-
-  ```
-  <meta name="viewport" content="width=device-width,height=device-height,user-scalable=no,initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0">
-  ```
-
-  If you use this meta tag, it will prevent the user from scaling and will also
-prevent scaling due to input focus and scaling due to device orientation.
-
-### IE cleartype.
-
-  You can turn cleartype on in IE-based browsers so that text in your mobile app looks nicer on the small screen.
-
-  ```
-  <meta http-equiv="cleartype" content="on">
-  ```
 
 ##Homescreen and Offline
 
@@ -361,6 +356,15 @@ apple-mobile-web-app-title tag.
 
   Android, doesn't have a comparable alternative, it will be set to your pages &lt;title&gt;.
 
+###Provide your own navigation
+
+  If a user adds your app to their homescreen, they won't have access to the
+back or forward buttons, so they need to be able to navigate your entire app
+without the use of these controls.  Using the common native app metaphor of
+transitioning between views works really well.  You can use CSS animations to
+setup the transitions, and pushState to setup the back button functionality for
+each page.
+
 ###Offline Caching
 
   If users are going to add your app to their homescreens, it had better work
@@ -379,3 +383,5 @@ offline and unable to connect to the app's servers.  If your app has data that
 a user may want to access when they aren't online, store it locally and sync
 when they come back online.
 
+https://developer.chrome.com/multidevice/android/installtohomescreen
+https://developer.apple.com/library/ios/documentation/AppleApplications/Reference/SafariWebContent/ConfiguringWebApplications/ConfiguringWebApplications.html
