@@ -235,6 +235,10 @@ you.
 
 ## Performance
 
+###Performance First
+  It's much easier to build something that's performant from day one, than
+  to build something that "works" and then trying to optimize it.  If something isn't performing, try to understand right away, before you have multiple confounding performance issues that are nearly impossible to debug, or have become integral to the way your app functions.
+
 ###Only animate transforms, opacity, and filter.
 
   This is a big one.  Animating properties like width, height, box-shadow, or
