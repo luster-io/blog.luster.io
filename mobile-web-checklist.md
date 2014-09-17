@@ -3,7 +3,7 @@ building high-performance mobile frontends.  Some of these are broadly
 applicable to any mobile website, some are specifically for people building
 apps.
 
-
+I've broken this checklist down into three main categories:
 1) UX and UI
 2) Performance
 3) Homescreen and Offline
@@ -367,7 +367,7 @@ transitioning between views works really well.  You can use CSS animations to
 setup the transitions, and pushState to setup the back button functionality for
 each page.
 
-###Offline Caching
+###Offline Asset Caching
 
   If users are going to add your app to their homescreens, it had better work
 whether or not they're connected to the internet. That's where app-cache comes
@@ -387,3 +387,14 @@ when they come back online.
 
 https://developer.chrome.com/multidevice/android/installtohomescreen
 https://developer.apple.com/library/ios/documentation/AppleApplications/Reference/SafariWebContent/ConfiguringWebApplications/ConfiguringWebApplications.html
+
+###Design for offline from the beginning.
+
+  The best way to prepare for offline operation is to design for it from the
+beginning. There are no specific guidelines in this section (which is why I'm
+putting it last) and implementation will vary widely depending on the nature
+and requirements of the app in question. That said, the more work you can do up
+front, the better. The sooner you can identify what data is necessary, how it
+will be used, and which transactions with the server are necessary for the app
+to function, the less likely it will be that the app will rely on functionality
+that will be difficult to abstract and cache.
