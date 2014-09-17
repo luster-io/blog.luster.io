@@ -8,6 +8,8 @@ apps.
 2) Performance
 3) Homescreen and Offline
 
+##UX and UI
+
 ###Don't put touch interactions too close to edges of the screen.
 
   Unfortunately, mobile web apps are considered second class citizens relative
