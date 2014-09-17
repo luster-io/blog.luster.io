@@ -314,13 +314,14 @@ homescreen](https://developer.apple.com/library/ios/documentation/appleapplicati
 iOS and Android make this possible, for a variety of resolution and size
 combinations.
 
-  ```
+  ```html
+  <!-- android -->
+  <link rel="shortcut icon" sizes="196x196" href="icon-196x196.png">
+
+  <!-- iOS -->
   <link rel="apple-touch-icon" href="touch-icon-iphone.png">
-
   <link rel="apple-touch-icon" sizes="76x76" href="touch-icon-ipad.png">
-
   <link rel="apple-touch-icon" sizes="120x120" href="touch-icon-iphone-retina.png">
-
   <link rel="apple-touch-icon" sizes="152x152" href="touch-icon-ipad-retina.png">
   ```
 
@@ -329,9 +330,22 @@ combinations.
   iOS goes even further by displaying a startup image on webapp load, like the
 user would see during the loading period of a native app. 
 
-  ```
+  ```html
   <link rel="apple-touch-startup-image" href="img/l/splash.png">
   ```
+
+###Change homescreen title.
+
+  iOS and Android will, by default, set the title of the homescreen icon to the
+title of the page. This can be overridden on iOS devices with the
+apple-mobile-web-app-title tag.
+
+  ```html
+  <meta name="apple-mobile-web-app-title" content="Luster">
+  ```
+
+  This tag is ignored by other mobile OSes, though. Hope your webapp's root
+document has a good, and short, title.
 
 ###Offline Caching
 
