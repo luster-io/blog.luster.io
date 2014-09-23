@@ -22,6 +22,8 @@ margin between the main content container and the sides of the screen that even
 the fattest of fingers won't accidentally trigger the host browser or OS's edge
 swipe gestures.
 
+<img src="images/edge_diagram.png" />
+
 ###Remove the click delay
 
   When you tap something on the mobile web, default behavior results in a 300ms
@@ -50,6 +52,8 @@ the next technique for Preventing Overscroll.
   WARNING: This will cause the double tap at the top of mobile safari to no
   longer scroll to the top of the page, since it's no longer the body scrolling.
 
+<img src="images/header_detached.png" />
+
 ###Prevent overscroll on the body.
 
   If you want your web app to feel app-like, you have to get rid of overscroll.
@@ -63,43 +67,10 @@ appears and the entire viewport shifts.
   <preference name="DisallowOverscroll" value="true" />
   ```
 
-  It's also possible to fix this issue in plain javascript.
+  It's also possible to fix this issue in plain javascript. An example is
+available at [this repo](https://github.com/luster-io/prevent-overscroll).
 
-  ```
-  module.exports = function(el) {
-    el.addEventListener('touchstart', function() {
-      var top = el.scrollTop
-        , totalScroll = el.scrollHeight
-        , currentScroll = top + el.offsetHeight
-
-      //If we're at the top or the bottom of the containers
-      //scroll, push up or down one pixel.
-      //
-      //this prevents the scroll from "passing through" to
-      //the body.
-      if(top === 0) {
-        el.scrollTop = 1
-      } else if(currentScroll === totalScroll) {
-        el.scrollTop = top - 1
-      }
-    })
-
-    el.addEventListener('touchmove', function(evt) {
-      //if the content is actually scrollable, i.e. the content is long enough
-      //that scrolling can occur
-      if(el.offsetHeight < el.scrollHeight)
-        evt._isScroller = true
-    })
-  }
-
-  document.body.addEventListener('touchmove', function(evt) {
-    //In this case, the default behavior is scrolling the body, which
-    //would result in an overflow.  Since we don't want that, we preventDefault.
-    if(!evt._isScroller) {
-      evt.preventDefault()
-    }
-  })
-  ```
+<img src="images/overscroll.png" />
 
 ###Make things that shouldn't be selectable, unselectable
 
@@ -145,6 +116,8 @@ the default highlight.
     -webkit-tap-highlight-color: rgba(0,0,0,0);
   }
   ```
+
+<img src="images/tap_highlight.png" />
 
 ###Use `:active` states or add active classes
 
